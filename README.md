@@ -2,7 +2,9 @@
 GeoSmartCity  routing service 
 
 
-This is a Java project for routing OSM data in Girona
+This is a Java project for routing OSM data in Girona 
+
+[Routing demo page](http://hub.geosmartcity.eu/GironaRouting)
 ![alt tag](https://raw.githubusercontent.com/GeoSmartCity-CIP/gsc-routing/master/images/preview.jpg)
 
 
