@@ -40,15 +40,7 @@ SELECT pgr_createTopology('network_routing', 0.00001, 'geom', 'id');
 --CREATE INDEX network_routing_source_idx ON network_routing ("source");
 --CREATE INDEX network_routing_target_idx ON network_routing ("target");
 
---test routing algorithm
-SELECT seq, id1 AS node, id2 AS edge, cost FROM pgr_dijkstra('
-                SELECT id ,
-                         source::integer,
-                         target::integer,
-                         cost
-                        FROM network_routing
-                        WHERE oneway!=''' ||'N' || '''',
-                1867, 2300, false, false);
+
 
 
  ALTER TABLE public.network_routing
@@ -66,13 +58,5 @@ WHERE oneway='TF' OR oneway='N';
 SELECT Count(*) FROM network_routing
 WHERE reverse_cost=NULL;
 
---test routing algorithm
-SELECT seq, id1 AS node, id2 AS edge, cost FROM pgr_dijkstra('
-                SELECT id ,
-                         source::integer,
-                         target::integer,
-                         cost, reverse_cost
-                        FROM network_routing 
-                        WHERE oneway!=''' ||'N' || '''',
-                1867, 2300, true, true);
+
 
