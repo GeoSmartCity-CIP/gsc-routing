@@ -1,10 +1,19 @@
 ﻿-- Function: public.pgr_fromatobwithsublines(double precision, double precision, double precision, double precision)
 
-DROP FUNCTION public.pgr_fromatobwithsublines(double precision, double precision, double precision, double precision);
+-- DROP FUNCTION public.pgr_fromatobwithsublines(double precision, double precision, double precision, double precision, integer, integer);
 
-CREATE OR REPLACE FUNCTION public.pgr_fromatobwithsublines(x1 double precision, y1 double precision, x2 double precision, y2 double precision,
-	out seq integer, out id integer , out name text, out geom geometry  )
-  RETURNS SETOF  record AS
+CREATE OR REPLACE FUNCTION public.pgr_fromatobwithsublines(
+    IN x1 double precision,
+    IN y1 double precision,
+    IN x2 double precision,
+    IN y2 double precision,
+	IN day integer,
+	IN daypart integer,
+    OUT seq integer,
+    OUT id integer,
+    OUT name text,
+    OUT geom geometry)
+  RETURNS SETOF record AS
 $BODY$
 DECLARE
 	sql     text; sridroutr int; 	startPoint geometry;	endPoint geometry;	nearesrsStartLine geometry;	nearestEndLine geometry;
@@ -64,7 +73,7 @@ ELSE
 CREATE TEMP TABLE route AS
 SELECT *
 FROM   
- pgr_fromAtoB('network_routing', ST_X(nearestStartNode), ST_Y(nearestStartNode), ST_X(nearestEndNode),ST_Y(nearestEndNode) ) 
+ pgr_fromAtoB('tmp_join', ST_X(nearestStartNode), ST_Y(nearestStartNode), ST_X(nearestEndNode),ST_Y(nearestEndNode), day, daypart  ) 
    ORDER BY  seq;
 
 
@@ -154,5 +163,5 @@ $BODY$
   LANGUAGE plpgsql VOLATILE
   COST 100
   ROWS 1000;
-ALTER FUNCTION public.pgr_fromatobwithsublines(double precision, double precision, double precision, double precision)
+ALTER FUNCTION public.pgr_fromatobwithsublines(double precision, double precision, double precision, double precision, integer, integer)
   OWNER TO postgres;
